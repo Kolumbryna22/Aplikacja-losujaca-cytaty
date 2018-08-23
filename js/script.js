@@ -1,15 +1,14 @@
 $(function() {
     'use strict';
 
+    var prefix = "https://cors-anywhere.herokuapp.com/";
     var tweetLink = "https://twitter.com/intent/tweet?text=";
     var quoteUrl = "https://quotesondesign.com/wp-json/posts?filter[orderby]=rand&filter[posts_per_page]=1";
     var $quote = $('.quote');
     var $author = $('.author');
-    var $tweet = $('.tweet')
+    var $tweet = $('.tweet');
 
     function getQuote() {
-        var prefix = "https://cors-anywhere.herokuapp.com/";
-
         $.getJSON(prefix + quoteUrl, createTweet);
         $.ajaxSetup({ cache: false });
     };
@@ -19,7 +18,6 @@ $(function() {
         var quoteText = $(data.content).text().trim();
         var quoteAuthor = data.title;
         var tweetText;
-        var tweet;
 
         if (!quoteAuthor.length) {
             quoteAuthor = "Unknown author";
@@ -31,10 +29,11 @@ $(function() {
             getQuote();
         }
         else {
-            tweet = tweetLink + encodeURIComponent(tweetText);
+            tweetText = tweetLink + encodeURIComponent(tweetText);
+
             $quote.text(quoteText);
             $author.text("Autor: " + quoteAuthor);
-            $tweet.attr('href', tweet);
+            $tweet.attr('href', tweetText);
         }
     };
 
